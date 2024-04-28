@@ -1,7 +1,6 @@
 bin/
 lib/
 
-virtual_env/video_content/output/
-virtual_env/video_content/source/
+virtual_env/video_content
 
 .DS_Store

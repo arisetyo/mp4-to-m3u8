@@ -4,6 +4,11 @@ import random
 import string
 import os
 
+# the path to the batch folder
+BATCH_FOLDER = "video_content/agora_batch_1"
+# platlist source name
+BATCH_LP_FOLDER = "lp340906"
+
 # Function to transcode an mp4 file to an m3u8 file
 def transcode_mp4_to_m3u8(input_file, output_file):
   (
@@ -14,6 +19,7 @@ def transcode_mp4_to_m3u8(input_file, output_file):
   )
 
 # Function to generate a random string of length n
+# DEPRECATED use the source name instead
 def generate_random_string(length):
     letters_and_digits = string.ascii_letters + string.digits
     result_str = ''.join(random.choice(letters_and_digits) for i in range(length))
@@ -31,23 +37,32 @@ args = parser.parse_args()
 
 if not args.source:
     print("No source parameter provided.")
+# DEPRECATED
+# if no target specified, use the source name
+'''
 if not args.target:
     print("No target parameter provided.")
+'''
+if not args.target:
+   # Use the parameter source in your code
+  target_name = args.source
+else:
+  target_name = args.target
 
-# Use the parameter source in your code
-concatenated_target = args.target + "_" + generate_random_string(6)
+# source name
+source_name = args.source
 
 # Define the input and output folders
-input_folder = "video_content/source/"
+input_folder  = BATCH_FOLDER + "/source/" + BATCH_LP_FOLDER + "/"
 
 # Create the output folder if it doesn't exist
-output_folder = "video_content/output/" + args.target
+output_folder = BATCH_FOLDER + "/output/" + BATCH_LP_FOLDER + "/" + target_name
 if not os.path.exists(output_folder):
     os.makedirs(output_folder)
 
 # Print the parameters
-print("The provided source parameter is:", args.source)
-print("The provided target parameter is:", concatenated_target)
+print("The provided source parameter is:", source_name)
+print("The provided target parameter is:", target_name)
 
 # ========================================================================
 '''
@@ -55,16 +70,15 @@ Call the function to transcode the mp4 file to m3u8
 
 Examples:
 
-$ python transcoder.py -s video_001 -t content_001
-$ python transcoder.py -s video_002 -t content_002
-$ python transcoder.py -s video_003 -t content_003
-$ python transcoder.py -s video_004 -t content_004
+$ python transcoder.py -s lu477129
+
 '''
 # ========================================================================
 if __name__ == '__main__':
   # format the source and target parameters
-  input_file  = input_folder + args.source + ".mp4"
-  output_file = output_folder + "/" + concatenated_target +  ".m3u8"
+  input_file  = input_folder + source_name + ".mp4"
+  # each video will broken down so that's why we create a folder that uses the source name as a folder name
+  output_file = output_folder + "/" + target_name +  ".m3u8"
   
   # call the function to transcode the mp4 file to m3u8
   transcode_mp4_to_m3u8(input_file, output_file)
