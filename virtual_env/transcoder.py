@@ -6,8 +6,6 @@ import os
 
 # the path to the batch folder
 BATCH_FOLDER = "video_content/agora_batch_1"
-# platlist source name
-BATCH_LP_FOLDER = "lp340906"
 
 # Function to transcode an mp4 file to an m3u8 file
 def transcode_mp4_to_m3u8(input_file, output_file):
@@ -29,8 +27,9 @@ def generate_random_string(length):
 parser = argparse.ArgumentParser(description="This is my program description")
 
 # Add the parameters
-parser.add_argument('-s', '--source', type=str, help='The source parameter for the script')
-parser.add_argument('-t', '--target', type=str, help='The target parameter for the script')
+parser.add_argument('-s', '--source',   type=str, help='The source parameter for the script')
+parser.add_argument('-t', '--target',   type=str, help='The target parameter for the script')
+parser.add_argument('-p', '--playlist', type=str, help='The batch parameter for the script')
 
 # Parse the arguments
 args = parser.parse_args()
@@ -51,18 +50,21 @@ else:
 
 # source name
 source_name = args.source
+# playlist shortcode / LP
+lp_folder = args.playlist
 
 # Define the input and output folders
-input_folder  = BATCH_FOLDER + "/source/" + BATCH_LP_FOLDER + "/"
+input_folder  = BATCH_FOLDER + "/source/" + lp_folder + "/"
 
 # Create the output folder if it doesn't exist
-output_folder = BATCH_FOLDER + "/output/" + BATCH_LP_FOLDER + "/" + target_name
+output_folder = BATCH_FOLDER + "/output/" + lp_folder + "/" + target_name
 if not os.path.exists(output_folder):
     os.makedirs(output_folder)
 
 # Print the parameters
 print("The provided source parameter is:", source_name)
 print("The provided target parameter is:", target_name)
+print("The provided playlist parameter is:", lp_folder)
 
 # ========================================================================
 '''
@@ -70,7 +72,7 @@ Call the function to transcode the mp4 file to m3u8
 
 Examples:
 
-$ python transcoder.py -s lu477129
+$ python transcoder.py -p lp340906 -s lu477186
 
 '''
 # ========================================================================
